@@ -28,13 +28,14 @@ from django.contrib.auth.decorators import user_passes_test
 
 # La fonction utilise des décorateurs et fait la création de comptes
 @api_view(['POST'])
-@permission_classes([AllowAny])
+#@permission_classes([AllowAny])
 def user_signup(request):
     serializer = CustomUserSerializer(data=request.data)
+    print("La donnee est ", request.data)
     if serializer.is_valid():
         user = serializer.save()
        # response_data['pass'] = user.password
-        response_data = {'message': "Utilisateur enregistré avec succès"}
+        response_data = {'message': "User saved successfully"}
         
         # Générer le token
         refresh = RefreshToken.for_user(user)
@@ -49,11 +50,12 @@ def user_signup(request):
             user.is_valid = False
             user.save()
             # Si idRoles est 2, c'est un client
-            response_data['user'] = {
+            response_data = {
+                'user': {
                 'id': user.id,
                 'lastname': user.lastname,
                 'firstname': user.firstname,
-                # Ajoutez d'autres détails de l'utilisateur si nécessaire
+                }
             }
             response_data['catalogue'] = {
                 'model_favoris': Client.modelfavoris.objects.filter(idClient=user.id).values(),  # Remplacez ModelFavoris par le vrai lastname du modèle
@@ -68,21 +70,23 @@ def user_signup(request):
             response_data['user'] = {
                 'id': user.id,
                 'lastname': user.lastname,
-                # Ajoutez d'autres détails de l'utilisateur si nécessaire
+                'firstname': user.firstname,
+                
             }
             response_data['catalogue'] = {
                 'liste_clients': user.liste_clients.all().values(),  # Exemple pour récupérer la liste de clients
             }
 
         return Response(response_data, status=status.HTTP_201_CREATED)
-
+    print(serializer.errors)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 # La fonction utilise des décorateurs et fait la connexion
 @api_view(['POST'])
-@permission_classes([AllowAny])
+#@permission_classes([AllowAny])
 def user_login(request):
+    print(request.data)
 
     CLIENT_ROLE = 2
     TAILLEUR_ROLE = 1
@@ -91,7 +95,7 @@ def user_login(request):
     password = request.data.get('password')
 
     user = get_object_or_404(CustomUser, phoneNumber=tel)
-    stored_password = user.password
+    stored_password = user.password 
 
     # Vérifier le mot de passe
     verified = password == stored_password
@@ -109,6 +113,11 @@ def user_login(request):
                 'id': user.id,
                 'lastname': user.lastname,
                 'firstname': user.firstname,
+                'phone' :user.phoneNumber,
+                'adresse': user.address,
+                'genre': user.gender,
+                'email' : user.email,
+                'birthday': user.birthday
             },
             'message': f"{user.lastname} {user.firstname} is connected "
         }
@@ -135,6 +144,10 @@ def user_login(request):
 
     return JsonResponse({"message": "Échec de connexion"}, status=status.HTTP_401_UNAUTHORIZED)
 
+def getAllPosition(role_id):
+   users = CustomUser.objects.filter(idRoles=role_id)
+   position = [user.address for user in users]
+   return position
 
 
 # La vue de l'image

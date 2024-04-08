@@ -87,10 +87,11 @@ class Image(models.Model):
 class ModelsTenue(models.Model):
     name = models.CharField(max_length=100)
     description = models.TextField()
-    image = models.ForeignKey(Image, on_delete=models.CASCADE)  # Relation avec le modèle Image
+    image = models.ForeignKey(Image, on_delete=models.CASCADE)  
     categorie = models.CharField(max_length=50)
-    temps_execution = models.CharField(max_length=50) # Stocke la durée en jours (peut être obtenue en heures ou minutes)
+    temps_execution = models.CharField(max_length=50) 
     prix = models.DecimalField(max_digits=10, decimal_places=2)
+    user_id = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.name
@@ -98,7 +99,7 @@ class ModelsTenue(models.Model):
 # Model du client
 class Client(models.Model):
     id = models.AutoField(primary_key=True)
-    idUser = models.ForeignKey(CustomUser, on_delete=models.CASCADE)  # Supposons que vous avez un modèle User pour les utilisateurs
+    idUser = models.ForeignKey(CustomUser, on_delete=models.CASCADE)  
     mesuration = models.CharField(max_length=255)
     modelfavoris = models.ManyToManyField(ModelsTenue)
 

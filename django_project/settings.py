@@ -26,7 +26,7 @@ SECRET_KEY = "django-insecure-nxj88^k)p^3v7b!74wxzu6s#@i#@e)&e1+d944ukw6#=7@9dp#
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['your_domain.com', 'localhost', '127.0.0.1', '192.168.1.12','192.168.1.107']
+ALLOWED_HOSTS = ['your_domain.com', 'localhost', '127.0.0.1', '192.168.0.107']
 
 
 # Application definition
@@ -40,9 +40,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     'api',
     'rest_framework',
-    'home',
     'rest_framework_simplejwt',
-  
 ]
 
 MIDDLEWARE = [
@@ -87,24 +85,24 @@ WSGI_APPLICATION = "django_project.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-""" DATABASES = {
+DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
         "NAME": BASE_DIR / "db.sqlite3",
     }
-} """
+} 
 
-'''
-DATABASES = {
-        'default': {
-            'ENGINE': 'djongo',
-            'ENFORCE_SCHEMA': False,
-            'NAME': 'donneeDB',
-        }
-}
-'''
+""" DATABASES = {
+      'default': {
+          'ENGINE': 'djongo',
+          'HOST': 'mongodb://localhost:27017/kereya',
+          'PORT': '27017',
+          'NAME': 'kereya',
+      }
+  } """
 
-DATABASES = {
+#mongodb://localhost:27017/kereya
+""" DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'dbkereya',
@@ -113,7 +111,7 @@ DATABASES = {
         'HOST': 'localhost',  # Replace with your PostgreSQL server's address if necessary
         'PORT': '5432',          # Leave empty to use the default PostgreSQL port (usually 5432)
     }
-}
+} """
 
 #Fichier gestion
 MEDIA_URL = '/media/'

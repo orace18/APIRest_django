@@ -1,6 +1,9 @@
 from django.urls import path,include
 from .views import  TrouverModelParId, TrouverTailleurParId, VoterTailleur, ajouter_tailleur, send_message, user_signup, user_login , ImageViewSet, ModelsTenueViewSet, ClientViewSet, TailleurViewSet, CommandeViewSet, RecetteViewSet, DepenseViewSet, CatalogueModel
 from rest_framework import routers
+from django.conf import settings
+from django.conf.urls.static import static
+from django.views.static import serve
 
 # creation des dossier d'image lors de l'enregistrement
 router = routers.DefaultRouter()
@@ -62,4 +65,4 @@ urlpatterns = [
 
     # Envoie de message
     path('send-message/<int:recipient_id>/', send_message, name='send_message'),
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

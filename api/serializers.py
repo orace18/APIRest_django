@@ -68,8 +68,8 @@ class VoterTailleurSerializer(serializers.Serializer):
     votes = serializers.IntegerField()
 
 # Le serializer du message
-# serializers.py
 class MessageSerializer(serializers.ModelSerializer):
     class Meta:
         model = Message
         fields = ['id', 'sender', 'recipient', 'content', 'timestamp', 'is_read']
+
